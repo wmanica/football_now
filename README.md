@@ -6,6 +6,9 @@ Shutout to http://futebolnow.meiamarca.com/ for providing the list with the game
 
 ![Demo gif](https://im4.ezgif.com/tmp/ezgif-4-646f55f4095e.gif)
 
+![Super Software Engineer header image](https://github.com/wmanica/football_now/blob/master/blob/preview.gif)
+
+
 ## About
 
 Ruby 2.5.0
