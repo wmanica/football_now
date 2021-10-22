@@ -4,6 +4,8 @@ Prints to the console the next football matches on Portuguese TV Channels but on
 
 Shutout to http://futebolnow.meiamarca.com/ for providing the list with the games available
 
+![Demo gif](https://im4.ezgif.com/tmp/ezgif-4-646f55f4095e.gif)
+
 ## About
 
 Ruby 2.5.0
