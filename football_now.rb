@@ -22,7 +22,8 @@ class FootballNow
         def parse_games
             @@doc.css('td').each_with_index do |node, index|
                 next if node.children.text.empty? || node.children.text.include?('RSS')
-
+                
+                # TODO: Refactor this ternary condition
                 (6..9) === node.children.text.size ? set_time(node, index) : set_game(node, index)            
             end
 
@@ -35,6 +36,7 @@ class FootballNow
             @@games[index] = { game: node.children.text }
         end
 
+        # TODO: Refactor the use of the index of the hash @@games
         def set_time(node, index)
             @@games[index - 1].merge!({ time: DateTime.parse(node.children.text).new_offset('+0100').strftime('%H:%M') })
         end
