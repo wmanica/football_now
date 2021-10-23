@@ -1,5 +1,8 @@
 # Changelog
- 
+## [1.0.3] - 2021/10/23
+### Added
+* Added a blink green bullet point for live games
+
 ## [1.0.2] - 2021/10/23
 ### Added
 * Added exception handler for SocketError

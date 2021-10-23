@@ -8,7 +8,7 @@ class FootballNow
         BASE_URL = 'http://futebolnow.meiamarca.com/jogos/'
         @@games = []
         
-        def start
+        def start            
             response = HTTParty.get(BASE_URL)
             @@doc = Nokogiri::HTML(response.body)
 
@@ -25,9 +25,8 @@ class FootballNow
         def parse_games
             @@doc.css('td').each do |node|
                 next if node.children.text.empty? || node.children.text.include?('RSS')
-                
-                # TODO: Refactor this ternary condition
-                (6..9) === node.children.text.size ? insert_time(node) : insert_game(node)            
+
+                node.attributes['align'].value == 'right' ? insert_time(node) : insert_game(node)            
             end
 
             game_index = 0
@@ -46,6 +45,7 @@ class FootballNow
 
         def insert_time(node)
             @@games.last.merge!({ time: DateTime.parse(node.children.text).new_offset('+0100').strftime('%H:%M') })
+            @@games.last.merge!({ live: true }) if !node.children.first.attributes['title'].nil? && node.children.first.attributes['title'].value == 'live'
         end
 
         def insert_tv(node, game_index)
@@ -54,12 +54,12 @@ class FootballNow
 
         def puts_games
             @@games.each do |game|
-                puts "#{game[:time].light_cyan.italic} #{game[:tv].light_yellow} - #{ colorize_benfica(game[:game].bold) }\n"
+                puts "#{ game[:time].light_white.italic } #{'• '.light_green.blink if game[:live]}#{ game[:tv].white } - #{ colorize_benfica(game[:game].bold) }\n"
             end
         end
 
         def colorize_benfica(game_string)
-            game_string.include?('Benfica') ? game_string.light_red : game_string.light_white
+            game_string.include?('Benfica') ? game_string.red : game_string.light_white
         end
     end
 end
