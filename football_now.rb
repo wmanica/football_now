@@ -15,6 +15,9 @@ class FootballNow
             parse_games
 
             puts_games
+
+        rescue SocketError => e
+            puts "Check your internet connection. Error message: #{e.message}".light_red.bold
         end
 
         private
@@ -56,7 +59,7 @@ class FootballNow
         end
 
         def colorize_benfica(game_string)
-            game_string.include?('Benfica') ? game_string.light_red.blink : game_string.light_white
+            game_string.include?('Benfica') ? game_string.light_red : game_string.light_white
         end
     end
 end
