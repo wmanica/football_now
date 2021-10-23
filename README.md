@@ -6,6 +6,11 @@ Shutout to http://futebolnow.meiamarca.com/ for providing the list with the game
 
 ![Demo gif](https://github.com/wmanica/football_now/blob/master/blob/preview.gif)
 
+## Usage
+
+```
+$ ruby football_now.rb
+```
 
 ## About
 
