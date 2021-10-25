@@ -1,63 +1,58 @@
 require 'httparty'
-require 'nokogiri'
+require 'active_support/core_ext/string/conversions'
 require 'colorize'
 require 'byebug'
 
 class FootballNow
     class << self
-        BASE_URL = 'http://futebolnow.meiamarca.com/jogos/'
-        @@games = []
+        BASE_URL = 'https://www.zerozero.pt/rss/zapping.php'
         
         def start            
             response = HTTParty.get(BASE_URL)
-            @@doc = Nokogiri::HTML(response.body)
+            games = response.parsed_response['rss']['channel']['item']
 
-            parse_games
-
-            puts_games
+            games.each do |game|
+                puts_game(game)
+            end
 
         rescue SocketError => e
             puts "Check your internet connection. Error message: #{e.message}".light_red.bold
         end
 
         private
-
-        def parse_games
-            @@doc.css('td').each do |node|
-                next if node.children.text.empty? || node.children.text.include?('RSS')
-
-                node.attributes['align'].value == 'right' ? insert_date(node) : insert_game(node)            
-            end
-
-            game_index = 0
-
-            @@doc.css('img').drop(1).each do |node|
-                next if node.attributes['alt'].value == 'live'
-
-                insert_tv(node, game_index)
-                game_index += 1
-            end
+        
+        def puts_game(game)
+            game_splitted = game['title'].split(' - ')
+            puts %Q(#{ datetime_adjust(game['pubDate']) } #{game_splitted.last.white} - #{ colorize_benfica(game_splitted.first).bold }\n)
         end
 
-        def insert_game(node)
-            @@games << { game: node.children.text }
+        def datetime_adjust(date)
+            date_splitted = date.split(' ').drop(1)
+
+            new_time = offset(date_splitted, 'Berlin')
+            date = date_adjust(date_splitted, new_time)
+
+            "#{date} #{new_time}"
         end
 
-        def insert_date(node)
-            day = node.children.text[0...3].strip == 'hj' ? Date.today.day : node.children.text[0...3].strip
+        def offset(date_splitted, city_tz)
+            Time.zone = 'London'
+            game_bst_time = Time.zone.parse("#{date_splitted[2]}-#{date_splitted[1]}-#{date_splitted.first} #{date_splitted.last}")
 
-            @@games.last.merge!({ time: "#{day} #{DateTime.parse(node.children.text).new_offset('+0100').strftime('%H:%M')}" })
-            @@games.last.merge!({ live: true }) if !node.children.first.attributes['title'].nil? && node.children.first.attributes['title'].value == 'live'
+            tz = ActiveSupport::TimeZone.find_tzinfo(city_tz)
+            game_cest_time = game_bst_time.in_time_zone(tz)
+
+            is_live = (game_cest_time..game_cest_time.change(hour: game_cest_time.hour + 2)).cover? Time.now.in_time_zone(tz)
+
+            "#{game_cest_time.strftime('%H:%M').light_white.italic}#{' •'.light_green.blink if is_live}"
         end
 
-        def insert_tv(node, game_index)
-            @@games[game_index].merge!({ tv: node.attributes['alt'].value })
-        end
+        def date_adjust(date_splitted, new_time)
+            methods = []
+            new_time.uncolorize == '00:00' ? methods << [:days_since, 1] : nil
+            methods << [:strftime, '%d/%m']
 
-        def puts_games
-            @@games.each do |game|
-                puts "#{ game[:time].light_white.italic } #{'• '.light_green.blink if game[:live]}#{ game[:tv].white } - #{ colorize_benfica(game[:game].bold) }\n"
-            end
+            methods.inject("#{date_splitted[0]}/#{date_splitted[1]}/#{date_splitted[2]}".to_date) { |o, method_and_args| o.send(*method_and_args) }
         end
 
         def colorize_benfica(game_string)

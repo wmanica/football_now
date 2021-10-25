@@ -1,7 +1,15 @@
 # Changelog
+## [2.0.0] - 2021/10/25
+### Added
+* String for timezone offset, preparing for a future user input
+### Changed
+* bumped Ruby version to 3.0.2
+* Refactor to a different url source with rss
+* Refactor to use ActiveSupport::TimeZone for the offset change
+
 ## [1.0.4] - 2021/10/25
 ### Added
-* Added the day of the month before the time for clarification
+* Added the day and month before the time for clarification
 
 ## [1.0.3] - 2021/10/23
 ### Added
