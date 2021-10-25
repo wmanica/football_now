@@ -1,4 +1,8 @@
 # Changelog
+## [1.0.4] - 2021/10/25
+### Added
+* Added the day of the month before the time for clarification
+
 ## [1.0.3] - 2021/10/23
 ### Added
 * Added a blink green bullet point for live games
@@ -8,7 +12,7 @@
 * Added exception handler for SocketError
 
 ## [1.0.1] - 2021/10/22
-### Changes
+### Changed
 * Refactor to not use index in loops
 
 ## [1.0.0] - 2021/10/22

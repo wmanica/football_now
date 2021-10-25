@@ -26,7 +26,7 @@ class FootballNow
             @@doc.css('td').each do |node|
                 next if node.children.text.empty? || node.children.text.include?('RSS')
 
-                node.attributes['align'].value == 'right' ? insert_time(node) : insert_game(node)            
+                node.attributes['align'].value == 'right' ? insert_date(node) : insert_game(node)            
             end
 
             game_index = 0
@@ -43,8 +43,10 @@ class FootballNow
             @@games << { game: node.children.text }
         end
 
-        def insert_time(node)
-            @@games.last.merge!({ time: DateTime.parse(node.children.text).new_offset('+0100').strftime('%H:%M') })
+        def insert_date(node)
+            day = node.children.text[0...3].strip == 'hj' ? Date.today.day : node.children.text[0...3].strip
+
+            @@games.last.merge!({ time: "#{day} #{DateTime.parse(node.children.text).new_offset('+0100').strftime('%H:%M')}" })
             @@games.last.merge!({ live: true }) if !node.children.first.attributes['title'].nil? && node.children.first.attributes['title'].value == 'live'
         end
 

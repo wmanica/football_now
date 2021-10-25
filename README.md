@@ -18,7 +18,7 @@ Ruby 2.5.0
 
 ## Versions
 
-Current version: **1.0.3**
+Current version: **1.0.4**
 
 ## Changelog
 
