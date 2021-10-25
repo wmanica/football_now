@@ -7,18 +7,18 @@ Shutout to zerozero (https://www.zerozero.pt/rss/zapping.php) for providing the 
 ![Demo gif](https://github.com/wmanica/football_now/blob/master/blob/preview.gif)
 
 ## Setup
-    1) have ruby version 3.0.2 installed. Check rbenv for more info: (https://github.com/rbenv/rbenv)
+1) have ruby version 3.0.2 installed. Check rbenv for more info: (https://github.com/rbenv/rbenv)
 
-    2) install the required gems
-    ```
-    $ gem install httparty activesupport byebug colorize
-    ```
+2) install the required gems
+```
+gem install httparty activesupport byebug colorize
+```
 
 ## Usage
 
 in the project folder
 ```
-$ ruby football_now.rb
+ruby football_now.rb
 ```
 
 ## About
