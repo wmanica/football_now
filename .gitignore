@@ -1,8 +1,0 @@
-# byebug command history file.
-.byebug_history
-
-# customs attributes storage of folders
-.DS_Store
-
-# ruby version locally declared
-.ruby-version
