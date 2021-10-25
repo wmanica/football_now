@@ -1,5 +1,8 @@
-# Ignore Byebug command history file.
+# byebug command history file.
 .byebug_history
 
-#  Ignore customs attributes storage of folders
+# customs attributes storage of folders
 .DS_Store
+
+# ruby version locally declared
+.ruby-version
