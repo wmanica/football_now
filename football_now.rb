@@ -1,8 +1,8 @@
+# frozen_string_literal: true
+
 require 'httparty'
 require 'active_support/core_ext/string/conversions'
-require 'colorize'
-require 'byebug'
-
+require 'paint'
 class FootballNow
     class << self
         BASE_URL = 'https://www.zerozero.pt/rss/zapping.php'
@@ -23,7 +23,7 @@ class FootballNow
         
         def puts_game(game)
             game_splitted = game['title'].split(' - ')
-            puts %Q(#{ datetime_adjust(game['pubDate']) } #{game_splitted.last.white} - #{ colorize_benfica(game_splitted.first).bold }\n)
+            puts %Q(#{ datetime_adjust(game['pubDate']) } #{Paint[game_splitted.last, :white, :italic]} - #{ Paint[colorize_benfica(game_splitted.first), :bold] }\n)
         end
 
         def datetime_adjust(date)
@@ -42,7 +42,7 @@ class FootballNow
             tz = ActiveSupport::TimeZone.find_tzinfo(city_tz)
             game_cest_time = game_bst_time.in_time_zone(tz)
 
-            "#{game_cest_time.strftime('%H:%M').light_white.italic}#{' •'.light_green.blink if is_live?(game_cest_time, tz)}"
+            "#{game_cest_time.strftime('%H:%M')}#{Paint[' •', :light_green, :blink] if is_live?(game_cest_time, tz)}"
         end
 
         def is_live?(game_cest_time, tz)
@@ -51,14 +51,14 @@ class FootballNow
 
         def date_adjust(date_splitted, new_time)
             methods = []
-            new_time.uncolorize == '00:00' ? methods << [:days_since, 1] : nil
+            new_time == '00:00' ? methods << [:days_since, 1] : nil
             methods << [:strftime, '%d/%m']
 
-            methods.inject("#{date_splitted[0]}/#{date_splitted[1]}/#{date_splitted[2]}".to_date) { |o, method_and_args| o.send(*method_and_args) }
+            methods.inject("#{date_splitted[0]}/#{date_splitted[1]}/#{date_splitted[2]}".to_date) { |o, method_and_args| o.public_send(*method_and_args) }
         end
 
         def colorize_benfica(game_string)
-            game_string.include?('Benfica') ? game_string.red : game_string.light_white
+            game_string.include?('Benfica') ? Paint[game_string, :red] : Paint[game_string, :white, :bright]
         end
     end
 end
