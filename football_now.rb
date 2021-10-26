@@ -42,7 +42,7 @@ class FootballNow
             tz = ActiveSupport::TimeZone.find_tzinfo(city_tz)
             game_cest_time = game_bst_time.in_time_zone(tz)
 
-            "#{game_cest_time.strftime('%H:%M')}#{Paint[' •', :light_green, :blink] if is_live?(game_cest_time, tz)}"
+            "#{game_cest_time.strftime('%H:%M')}#{Paint[' •', :green, :blink] if is_live?(game_cest_time, tz)}"
         end
 
         def is_live?(game_cest_time, tz)
