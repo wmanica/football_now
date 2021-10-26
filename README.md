@@ -20,6 +20,14 @@ in the project folder
 ```
 ruby football_now.rb
 ```
+NOTE: If you wish to run this command shortly (as shown in the gif above) you can set it up in your shell config. In my case ~/.zshrc and add method with the input name you desire, in my case tv, which would like this:
+```
+##### FOOTBALL NOW #####
+	tv() {
+		clear
+		ruby ~/PATH/TO/THE/PROJECT/FOLDER/football_now/football_now.rb
+	}
+```
 
 ## About
 
@@ -27,7 +35,7 @@ Ruby 3.0.2
 
 ## Versions
 
-Current version: **2.0.0**
+Current version: **2.0.1**
 
 ## Changelog
 
