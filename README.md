@@ -2,7 +2,7 @@
 
 Prints to the console the next football matches on Portuguese TV Channels but on GTM +2 for CEST
 
-Shutout to zerozero (https://www.zerozero.pt/rss/zapping.php) for providing the rss list with the games available
+Shutout to [zerozero](https://www.zerozero.pt/rss/zapping.php) for providing the rss list
 
 ![Demo gif](https://github.com/wmanica/football_now/blob/master/blob/preview.gif)
 
