@@ -1,4 +1,8 @@
 # Changelog
+## [2.0.1] - 2021/10/26
+### Changed
+* Refactor the colorization of strings
+
 ## [2.0.0] - 2021/10/25
 ### Added
 * String for timezone offset, preparing for a future user input
