@@ -1,4 +1,10 @@
 # Changelog
+## [2.0.2] - 2021/10/30
+### Added
+* Added prompt user input to select the city for timezone
+### Changed
+* Refactor the date/time calculation
+
 ## [2.0.1] - 2021/10/26
 ### Changed
 * Refactor the colorization of strings
