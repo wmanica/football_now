@@ -7,6 +7,7 @@ Shutout to [zerozero](https://www.zerozero.pt/rss/zapping.php) for providing the
 ![Demo gif](https://github.com/wmanica/football_now/blob/master/blob/preview.gif)
 
 ## Setup
+
 1) install ruby v3.0.2. Check [rbenv](https://github.com/rbenv/rbenv) for more info
 
 2) install the required gems
