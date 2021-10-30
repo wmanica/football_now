@@ -3,7 +3,7 @@
 require 'httparty'
 require 'active_support/core_ext/string/conversions'
 require 'paint'
-# require 'byebug' only needed for debugging. Comment for no need to install it
+
 class FootballNow
     class << self
         BASE_URL = 'https://www.zerozero.pt/rss/zapping.php'
@@ -32,24 +32,19 @@ class FootballNow
 
         def user_input
             input = gets.chomp
-
-            if input.downcase == 'help'
-                cities_tz_list
-            else
-                @city_tz = find_tzinfo(input)
-            end 
+            input.downcase == 'help' ? cities_tz_list : @city_tz = find_tzinfo(input.capitalize)
         end
 
         def cities_tz_list
-            ActiveSupport::TimeZone.all.each { |city| puts city.name  }
+            ActiveSupport::TimeZone.all.sort_by { |o| o.name }.map {|o| puts o.name} 
             city_prompt
         end
 
-        def find_tzinfo(city)
-            ActiveSupport::TimeZone.find_tzinfo(city)
+        def find_tzinfo(input)
+            ActiveSupport::TimeZone.find_tzinfo(input)
 
         rescue TZInfo::InvalidTimezoneIdentifier => e
-            puts "\n\nWe could not find in out timezone list: #{e.message}"
+            puts "\n\n#{Paint['We could not find in out timezone list:', :red]} #{e.message}"
             city_prompt
         end
 
