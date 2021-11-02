@@ -23,7 +23,7 @@ class FootballNow
         private
 
         def city_prompt
-            puts "\nPORTUGUESE SPORTV TV CHANNELS"
+            puts "\nPORTUGUESE SPORT TV CHANNELS"
             puts "\nEnter the city to convert games date/times into"
             puts "\nNOTE: type #{Paint['help', :green]} for the list of cities/timezones\n"
 

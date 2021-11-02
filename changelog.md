@@ -1,7 +1,10 @@
 # Changelog
-## [2.0.2] - 2021/10/30
+## [2.1.0] - 2021/11/02
 ### Added
 * Added prompt user input to select the city for timezone
+* Added help input to show list of cities / timezones available
+* Added Gemfile
+* Added Dockerfile
 ### Changed
 * Refactor the date/time calculation
 

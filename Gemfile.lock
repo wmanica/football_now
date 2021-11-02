@@ -27,9 +27,9 @@ PLATFORMS
   x86_64-darwin-19
 
 DEPENDENCIES
-  activesupport
-  httparty
-  paint
+  activesupport (~> 6.1.0)
+  httparty (~> 0.20.0)
+  paint (~> 2.2.0)
 
 BUNDLED WITH
    2.2.30
