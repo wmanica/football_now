@@ -31,7 +31,7 @@ $ docker build . -t <container_name>:<version_tag>
 ```
 2) Run the container
 ```
-$ docker build run -it <container_name>:<version_tag>
+$ docker run -it <container_name>:<version_tag>
 ```
 
 ## Usage
