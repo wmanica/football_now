@@ -4,6 +4,8 @@ require 'httparty'
 require 'active_support/core_ext/string/conversions'
 require 'paint'
 
+# TODO: add docker_build.sh and docker_run.sh scripts to build and run the docker commands
+
 class FootballNow
     class << self
         BASE_URL = 'https://www.zerozero.pt/rss/zapping.php'
@@ -17,7 +19,7 @@ class FootballNow
             print_games(games)
 
         rescue SocketError => e
-            puts "Check your internet connection. Error message: #{e.message}".light_red.bold
+            puts "#{Paint['Check your internet connection. Error message:', :red]} #{e.message}"
         end
 
         private
@@ -41,8 +43,7 @@ class FootballNow
         end
 
         def find_tzinfo(input)
-            ActiveSupport::TimeZone.find_tzinfo(input)
-
+            input.blank? ? ActiveSupport::TimeZone.find_tzinfo('Berlin') : ActiveSupport::TimeZone.find_tzinfo(input)
         rescue TZInfo::InvalidTimezoneIdentifier => e
             puts "\n\n#{Paint['We could not find in out timezone list:', :red]} #{e.message}"
             city_prompt

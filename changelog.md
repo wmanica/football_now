@@ -1,4 +1,10 @@
 # Changelog
+## [2.1.1] - 2021/11/13
+### Added
+* Blank input to default to Berlin tz
+### Changed
+* SocketError to use Paint gem
+
 ## [2.1.0] - 2021/11/02
 ### Added
 * Added prompt user input to select the city for timezone
