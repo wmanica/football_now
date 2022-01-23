@@ -50,7 +50,9 @@ class FootballNow
         end
 
         def print_games(games)
-            puts "\nCity timezone of: #{@city_tz.name}: #{@city_tz.now.strftime('%d/%m %H:%M')}\n\n"
+            system("clear")
+
+            puts "\nCity timezone: #{@city_tz.name} - #{@city_tz.now.strftime('%d/%m %H:%M')}\n\n"
 
             games.each do |game|
                 puts_game(game)

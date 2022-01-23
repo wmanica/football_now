@@ -1,4 +1,7 @@
 # Changelog
+## [2.1.2] - 2022/01/23
+### Added
+* Console clearing before printing the games
 ## [2.1.1] - 2021/11/13
 ### Added
 * Blank input to default to Berlin tz
