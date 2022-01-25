@@ -4,7 +4,7 @@ require 'httparty'
 require 'active_support/core_ext/string/conversions'
 require 'paint'
 
-# TODO: add docker_build.sh and docker_run.sh scripts to build and run the docker commands
+# TODO: add docker_build.sh and docker_run.sh scripts to build and run the docker's commands
 
 class FootballNow
     class << self
