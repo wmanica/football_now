@@ -1,6 +1,4 @@
 # frozen_string_literal: true
-require 'jimson'
-require 'json'
 
 require 'httparty'
 require 'active_support/core_ext/string/conversions'
@@ -9,7 +7,6 @@ require 'paint'
 # TODO: add docker_build.sh and docker_run.sh scripts to build and run the docker's commands
 
 class FootballNow
-    extend Jimson::Handler
     class << self
         BASE_URL = 'https://www.zerozero.pt/rss/zapping.php'
         
