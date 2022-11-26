@@ -2,7 +2,9 @@
 
 require 'httparty'
 require 'active_support/core_ext/string/conversions'
+require 'active_support/isolated_execution_state'
 require 'paint'
+require 'byebug'
 
 # TODO: add docker_build.sh and docker_run.sh scripts to build and run the docker's commands
 
