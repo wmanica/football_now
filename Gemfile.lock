@@ -25,6 +25,7 @@ GEM
 PLATFORMS
   arm64-darwin-20
   arm64-darwin-21
+  arm64-darwin-22
   x86_64-darwin-19
 
 DEPENDENCIES
@@ -34,4 +35,4 @@ DEPENDENCIES
   paint (~> 2.2.0)
 
 BUNDLED WITH
-   2.2.30
+   2.2.33

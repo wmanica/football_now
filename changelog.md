@@ -7,6 +7,10 @@
 * Refactored namings
 * Applied some rubocop styling 
 
+## [2.1.3] - 2023/06/21
+### Changed
+* byebug and httpart bumped versions
+
 ## [2.1.2] - 2022/01/23
 ### Added
 * Console clearing before printing the games
