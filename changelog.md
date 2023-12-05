@@ -1,11 +1,12 @@
 # Changelog
 ## [2.2.0] - 2023/12/05
 ### Added
-* rubocop.yml config file
+* Added rubocop.yml config file
 ### Changed
-* Bumped some dependencies in the Gemfile.lock
-* Refactored namings
-* Applied some rubocop styling 
+* Applied some rubocop suggestions 
+* Bumped some dependencies
+* Refactor namings
+* New blob gif
 
 ## [2.1.3] - 2023/06/21
 ### Changed
