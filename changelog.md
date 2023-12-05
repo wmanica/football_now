@@ -1,10 +1,20 @@
 # Changelog
+## [2.2.0] - 2023/12/05
+### Added
+* rubocop.yml config file
+### Changed
+* Bumped some dependencies in the Gemfile.lock
+* Refactored namings
+* Applied some rubocop styling 
+
 ## [2.1.3] - 2023/06/21
 ### Changed
 * byebug and httpart bumped versions
+
 ## [2.1.2] - 2022/01/23
 ### Added
 * Console clearing before printing the games
+
 ## [2.1.1] - 2021/11/13
 ### Added
 * Blank input to default to Berlin tz
