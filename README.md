@@ -51,11 +51,11 @@ NOTE: If you wish to run this command shortly (as shown in the gif above) you ca
 
 ## About
 
-Ruby 3.0.2
+Ruby 3.3.0
 
 ## Versions
 
-Current version: **2.2.0**
+Current version: **3.0.0**
 
 ## Changelog
 

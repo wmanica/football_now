@@ -1,4 +1,8 @@
 # Changelog
+## [3.0.0] - 2023/12/31
+### Changed
+* bumped Ruby version to 3.3.0 for project and also in Dockerfile
+
 ## [2.2.0] - 2023/12/05
 ### Added
 * Added rubocop.yml config file

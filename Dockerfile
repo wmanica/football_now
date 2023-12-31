@@ -1,4 +1,4 @@
-FROM ruby:3.0.2
+FROM ruby:3.3.0
 WORKDIR /football_now
 COPY . /football_now/
 RUN gem install bundler \
