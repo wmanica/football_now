@@ -22,23 +22,24 @@ class FootballNow
     end
 
     private
-      def handle_response(response)
-        return puts "#{Paint['Failed to get games. Status code:', :red]} #{response.code}" unless response.success?
 
-        games = response.parsed_response.dig('rss', 'channel', 'item')
-        return puts "#{Paint['No games found.', :red]}" unless games
+    def handle_response(response)
+      return puts "#{Paint['Failed to get games. Status code:', :red]} #{response.code}" unless response.success?
 
-        city_prompt
+      games = response.parsed_response.dig('rss', 'channel', 'item')
+      return puts "#{Paint['No games found.', :red]}" unless games
 
-        print_games(games)
-      end
+      city_prompt
+
+      print_games(games)
+    end
 
     def city_prompt
       content = <<~TEXT
-      PORTUGUESE SPORT TV CHANNELS
+        PORTUGUESE SPORT TV CHANNELS
 
-      Enter the city to convert games date/times into
-      ** type #{Paint['help', :green]} for the list of cities/timezones **
+        Enter the name of the city (for example: London) to convert games date/times into
+        ** type #{Paint['help', :green]} for the list of cities/timezones **
       TEXT
 
       puts content
@@ -48,7 +49,13 @@ class FootballNow
 
     def user_input
       input = gets.chomp
-      input.downcase == 'help' ? cities_tz_list : @city_tz = find_tzinfo(input.capitalize)
+      if input.downcase == 'help'
+        cities_tz_list
+      else
+        @city_tz = find_tzinfo(input.capitalize)
+        # If @city_tz is not correctly initialised, initialise with default value
+        @city_tz ||= ActiveSupport::TimeZone.find_tzinfo('Berlin')
+      end
     end
 
     def cities_tz_list
@@ -91,10 +98,13 @@ class FootballNow
     end
 
     def offset(pub_date, city_tz)
-      date_split = pub_date.split(' ').drop(1)
+      date_split = pub_date.split(' ')
 
+      raise ArgumentError, 'Invalid date format' if date_split.size < 2
+
+      date_part = date_split.drop(1)
       Time.zone = 'London'
-      bst_time = Time.zone.parse("#{date_split[2]}-#{date_split[1]}-#{date_split.first} #{date_split.last}")
+      bst_time = Time.zone.parse("#{date_part[2]}-#{date_part[1]}-#{date_part.first} #{date_part.last}")
 
       user_time = bst_time.in_time_zone(city_tz)
 
@@ -102,7 +112,7 @@ class FootballNow
     end
 
     def live?(user_time)
-      current_time = Time.now.in_time_zone(@city_tz)
+      current_time = (@current_time ||= Time.now).in_time_zone(@city_tz)
       (user_time..user_time.advance(hours: +2)).cover? current_time
     end
 
