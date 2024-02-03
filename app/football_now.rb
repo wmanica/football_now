@@ -56,20 +56,25 @@ class FootballNow
 
     def print_games(games)
       system('clear')
-
-      puts "\nCity timezone: #{@city_tz.name} - #{@city_tz.now.strftime('%d/%m %H:%M')}\n\n"
+      display_city_timezone
 
       games.each do |game|
-        puts_game(game)
+        print_game(game)
       end
     end
 
-    def puts_game(game)
+    def display_city_timezone
+      puts "\nCity timezone: #{@city_tz.name} - #{@city_tz.now.strftime('%d/%m %H:%M')}\n\n"
+    end
+
+    def print_game(game)
       game_splitted = game['title'].split(' - ')
 
-      puts "#{offset(game['pubDate'])} "\
+      game_information = "#{offset(game['pubDate'], @city_tz)} "\
         "#{Paint[game_splitted.last, :white, :italic]} - "\
         "#{Paint[colorize_benfica(game_splitted.first), :bold]}\n"
+
+      puts game_information
     end
 
     def offset(pub_date)
@@ -84,7 +89,8 @@ class FootballNow
     end
 
     def live?(user_time)
-      (user_time..user_time.advance(hours: +2)).cover? Time.now.in_time_zone(@city_tz)
+      current_time = Time.now.in_time_zone(@city_tz)
+      (user_time..user_time.advance(hours: +2)).cover? current_time
     end
 
     def colorize_benfica(game_string)
