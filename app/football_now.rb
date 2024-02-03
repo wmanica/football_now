@@ -10,19 +10,28 @@ require 'paint'
 class FootballNow
   class << self
     BASE_URL = 'https://www.zerozero.pt/rss/zapping.php'
+    DATE_FORMAT = '%d/%m %H:%M'
+    DETAIL_SEPARATOR = ' - '
+    MY_TEAM = 'Benfica'
 
     def start
       response = HTTParty.get(BASE_URL)
-      games = response.parsed_response['rss']['channel']['item']
-
-      city_prompt
-
-      print_games(games)
-    rescue SocketError => e
+      handle_response(response)
+    rescue SocketError, HTTParty::Error => e
       puts "#{Paint['Check your internet connection. Error message:', :red]} #{e.message}"
     end
 
     private
+      def handle_response(response)
+        return puts "#{Paint['Failed to get games. Status code:', :red]} #{response.code}" unless response.success?
+
+        games = response.parsed_response.dig('rss', 'channel', 'item')
+        return puts "#{Paint['No games found.', :red]}" unless games
+
+        city_prompt
+
+        print_games(games)
+      end
 
     def city_prompt
       content = <<~TEXT
@@ -48,9 +57,11 @@ class FootballNow
     end
 
     def find_tzinfo(input)
-      input.blank? ? ActiveSupport::TimeZone.find_tzinfo('Berlin') : ActiveSupport::TimeZone.find_tzinfo(input)
-    rescue TZInfo::InvalidTimezoneIdentifier => e
-      puts "\n\n#{Paint['We could not find in out timezone list:', :red]} #{e.message}"
+      return ActiveSupport::TimeZone.find_tzinfo('Berlin') if input.blank?
+
+      ActiveSupport::TimeZone.find_tzinfo(input)
+    rescue TZInfo::InvalidTimezoneIdentifier
+      puts "\n\n#{Paint['We could not find in our timezone list:', :red]} #{input}"
       city_prompt
     end
 
@@ -68,24 +79,26 @@ class FootballNow
     end
 
     def print_game(game)
-      game_splitted = game['title'].split(' - ')
+      game_details = game['title'].split(DETAIL_SEPARATOR)
 
-      game_information = "#{offset(game['pubDate'], @city_tz)} "\
-        "#{Paint[game_splitted.last, :white, :italic]} - "\
-        "#{Paint[colorize_benfica(game_splitted.first), :bold]}\n"
+      return if game_details.size < 2
+
+      game_information = "#{offset(game['pubDate'], @city_tz)} "
+      game_information << "#{Paint[game_details.last, :white, :italic]}#{DETAIL_SEPARATOR}"
+      game_information << "#{Paint[colorize_my_team(game_details.first), :bold]}\n"
 
       puts game_information
     end
 
-    def offset(pub_date)
-      date_splitted = pub_date.split(' ').drop(1)
+    def offset(pub_date, city_tz)
+      date_split = pub_date.split(' ').drop(1)
 
       Time.zone = 'London'
-      bst_time = Time.zone.parse("#{date_splitted[2]}-#{date_splitted[1]}-#{date_splitted.first} #{date_splitted.last}")
+      bst_time = Time.zone.parse("#{date_split[2]}-#{date_split[1]}-#{date_split.first} #{date_split.last}")
 
-      user_time = bst_time.in_time_zone(@city_tz)
+      user_time = bst_time.in_time_zone(city_tz)
 
-      "#{user_time.strftime('%d/%m %H:%M')} #{Paint['•', :green, :blink] if live?(user_time)}"
+      "#{user_time.strftime(DATE_FORMAT)} #{Paint['•', :green, :blink] if live?(user_time)}"
     end
 
     def live?(user_time)
@@ -93,8 +106,8 @@ class FootballNow
       (user_time..user_time.advance(hours: +2)).cover? current_time
     end
 
-    def colorize_benfica(game_string)
-      game_string.include?('Benfica') ? Paint[game_string, :red] : Paint[game_string, :white, :bright]
+    def colorize_my_team(game_string)
+      game_string.include?(MY_TEAM) ? Paint[game_string, :red] : Paint[game_string, :white, :bright]
     end
   end
 end
