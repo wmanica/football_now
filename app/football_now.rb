@@ -12,26 +12,47 @@ class FootballNow
     BASE_URL = 'https://www.zerozero.pt/rss/zapping.php'
     DATE_FORMAT = '%d/%m %H:%M'
     DETAIL_SEPARATOR = ' - '
+    DEFAULT_TZ = 'Berlin'
     MY_TEAM = 'Benfica'
+    ERROR_COLOR = :red
 
     def start
-      response = HTTParty.get(BASE_URL)
-      handle_response(response)
+      fetch_data_and_start
     rescue SocketError, HTTParty::Error => e
-      puts "#{Paint['Check your internet connection. Error message:', :red]} #{e.message}"
+      puts Paint['Check your internet connection. Error message:', ERROR_RED, e.message]
+    rescue StandardError => e
+      puts Paint['An error occurred:', ERROR_RED, e.message]
     end
 
     private
 
-    def handle_response(response)
-      return puts "#{Paint['Failed to get games. Status code:', :red]} #{response.code}" unless response.success?
+    def fetch_data_and_start
+      response = HTTParty.get(BASE_URL)
+      check_response(response)
 
-      games = response.parsed_response.dig('rss', 'channel', 'item')
-      return puts "#{Paint['No games found.', :red]}" unless games
+      games = extract_games(response)
+      check_games(games)
 
       city_prompt
-
       print_games(games)
+    end
+
+    def check_response(response)
+      unless response.success?
+        raise "#{Paint['Failed to get games. Status code:', ERROR_COLOR]} #{response.code}"
+      end
+    end
+
+    def extract_games(response)
+      games = response.parsed_response.dig('rss', 'channel', 'item')
+      check_games(games)
+      games
+    end
+
+    def check_games(games)
+      unless games
+        raise "#{Paint['No games found.', ERROR_COLOR]}"
+      end
     end
 
     def city_prompt
@@ -43,7 +64,6 @@ class FootballNow
       TEXT
 
       puts content
-
       user_input
     end
 
@@ -87,7 +107,6 @@ class FootballNow
 
     def print_game(game)
       game_details = game['title'].split(DETAIL_SEPARATOR)
-
       return if game_details.size < 2
 
       game_information = "#{offset(game['pubDate'], @city_tz)} "
@@ -105,7 +124,6 @@ class FootballNow
       date_part = date_split.drop(1)
       Time.zone = 'London'
       bst_time = Time.zone.parse("#{date_part[2]}-#{date_part[1]}-#{date_part.first} #{date_part.last}")
-
       user_time = bst_time.in_time_zone(city_tz)
 
       "#{user_time.strftime(DATE_FORMAT)} #{Paint['•', :green, :blink] if live?(user_time)}"
