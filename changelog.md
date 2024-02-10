@@ -1,7 +1,11 @@
 # Changelog
+## [4.0.0] - 2024/02/11
+### Changed
+* Big refactor on the project structure
+
 ## [3.0.0] - 2023/12/31
 ### Changed
-* bumped Ruby version to 3.3.0 for project and also in Dockerfile
+* Bumped Ruby version to 3.2.2 for project and also in Dockerfile
 
 ## [2.2.0] - 2023/12/05
 ### Added

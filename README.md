@@ -11,11 +11,11 @@ There is the possibility of installing ruby and the dependencies (you can also u
 to use a containerized version with docker.
 
 ### Local
-1) install ruby v3.0.2. Check [rbenv](https://github.com/rbenv/rbenv) for more info
+1) install ruby v3.2.2 - Check [rbenv](https://github.com/rbenv/rbenv) for more info
 
 2) install the required gems
 ```
-$ gem install httparty activesupport paint
+$ gem install activesupport httparty nokogiri paint rake
 ```
 NOTE: alternatively if you use bundler, at the app directory:
 ```
@@ -38,24 +38,25 @@ $ docker run -it <container_name>:<version_tag>
 
 in the project folder
 ```
-ruby football_now.rb
+bundle exec rake start:football_now
 ```
 NOTE: If you wish to run this command shortly (as shown in the gif above) you can set it up in your shell config. In my case ~/.zshrc and add method with the input name you desire, in my case tv, which would like this:
 ```
 ##### FOOTBALL NOW #####
 	tv() {
 		clear
-		ruby ~/PATH/TO/THE/PROJECT/FOLDER/football_now/app/football_now.rb
+		cd ~/PATH/TO/THE/PROJECT/FOLDER/football_now/
+		bundle exec rake start:football_now
 	}
 ```
 
 ## About
 
-Ruby 3.3.0
+Ruby 3.2.2
 
 ## Versions
 
-Current version: **3.0.0**
+Current version: **4.0.0**
 
 ## Changelog
 
