@@ -17,21 +17,24 @@ GEM
     mime-types-data (3.2023.1003)
     minitest (5.20.0)
     multi_xml (0.6.0)
+    nokogiri (1.16.2-x86_64-darwin)
+      racc (~> 1.4)
     paint (2.2.1)
+    racc (1.7.3)
+    rake (13.1.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
 
 PLATFORMS
-  arm64-darwin-20
-  arm64-darwin-21
-  arm64-darwin-22
-  arm64-darwin-23
   x86_64-darwin-19
+  x86_64-darwin-23
 
 DEPENDENCIES
   activesupport (~> 7.0.0)
   httparty (~> 0.20.0)
+  nokogiri
   paint (~> 2.2.0)
+  rake
 
 BUNDLED WITH
    2.5.3
