@@ -1,6 +1,7 @@
-FROM ruby:3.3.0
+FROM ruby:3.2.2
 WORKDIR /football_now
-COPY . /football_now/
+COPY Gemfile Gemfile.lock ./
 RUN gem install bundler \
-    && bundler update
-CMD ["/bin/sh","-c","ruby app/football_now.rb"]
+    && bundle install --jobs 20 --retry 5
+COPY . /football_now
+CMD ["bundle", "exec", "rake", "start:football_now"]
