@@ -45,7 +45,6 @@ NOTE: If you wish to run this command shortly (as shown in the gif above) you ca
 ##### FOOTBALL NOW #####
 	tv() {
 		clear
-		cd ~/PATH/TO/THE/PROJECT/FOLDER/football_now/
 		bundle exec rake start:football_now
 	}
 ```
