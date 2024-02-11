@@ -1,7 +1,14 @@
 # Changelog
 ## [4.0.0] - 2024/02/11
+### Added
+* Added specs
+* Added exit functionality and 
+
 ### Changed
-* Big refactor on the project structure
+* Refactor the flow of the app and the interaction with the user
+* Refactor the whole project code structure
+* Refactored the 'user_input' method to handle invalid city inputs more effectively. 
+* Enhanced error handling.
 
 ## [3.0.0] - 2023/12/31
 ### Changed
