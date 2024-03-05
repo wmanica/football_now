@@ -1,4 +1,9 @@
 # Changelog
+## [4.0.1] - 2024/03/05
+### Changed
+* Bumped bundle version
+* Upgraded gem dependencies
+
 ## [4.0.0] - 2024/02/11
 ### Added
 * Added specs
