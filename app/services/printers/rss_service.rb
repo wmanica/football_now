@@ -3,7 +3,7 @@
 module Printers
   class RssService < ::PrintersManagerService
     def print_game(game)
-      game_details = game['title'].split(TV_SEPARATOR)
+      game_details = game['title'].split(SEPARATOR)
       return if game_details.size < 2
 
       puts "THIS NEED TO BE REFACTORED"

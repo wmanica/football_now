@@ -22,9 +22,7 @@ describe GamesFetcherService do
     context 'when the service is HTML' do
       let(:expected_html_return) do
         {
-          games: [
-            { info: "Some other data", tv: nil}
-          ],
+          games: [{ info: "Some other data", tv: nil, competition: '' }],
           service: :Html
         }
       end
