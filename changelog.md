@@ -1,4 +1,12 @@
 # Changelog
+## [5.0.0] - 2024/03/28
+### Added
+* Introduced two new service classes: HtmlService and RssService
+
+### Changed
+* Refactor fetching of games, to now be able to use an HTML source
+* GamesFetcherService to handle RSS and HTML sources
+
 ## [4.0.1] - 2024/03/05
 ### Changed
 * Bumped bundle version
@@ -30,7 +38,7 @@
 
 ## [2.1.3] - 2023/06/21
 ### Changed
-* byebug and httpart bumped versions
+* byebug and httparty bumped versions
 
 ## [2.1.2] - 2022/01/23
 ### Added
