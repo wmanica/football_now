@@ -17,11 +17,11 @@ class FootballNow
 
     private
 
-    def fetch_data_and_start
-      games, service = GamesFetcherService.fetch_games.values
+      def fetch_data_and_start
+        games, service = GamesFetcherService.fetch_games.values
 
-      city_tz = UserPromptService.new.city_prompt
-      Object.const_get("Printers::#{service}Service").new(games, city_tz).print_games
-    end
+        city_tz = UserPromptService.new.city_prompt
+        Object.const_get("Printers::#{service}Service").new(games, city_tz).print_games
+      end
   end
 end

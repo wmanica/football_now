@@ -38,13 +38,15 @@ class GamesFetcherService
       tbody = find_tbody(document)
 
       tbody.css('tr').map do |tr|
+        competition = tr.css('td:last-child').text.gsub("\u00A0", '').strip
+
         tds = tr.css('td')[0...-1]
         code = tr.at_css('div.micrologo_and_text > div.text > a')&.text
 
-        raw = tds.map(&:text).join(' ').gsub(code, '').strip
+        game_info = tds.map(&:text).join(' ').gsub(code, '').strip
         tv = tr.at_css('td:nth-last-child(2) img')&.[]('alt')
 
-        { info: raw, tv: tv }
+        { info: game_info, tv: tv, competition: competition }
       end
     end
 

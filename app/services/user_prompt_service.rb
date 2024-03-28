@@ -17,45 +17,47 @@ class UserPromptService
     @city_tz
   end
 
-  def instruction_text
-    <<~TEXT
-      PORTUGUESE SPORT TV CHANNELS
+  private
 
-      Enter the name of the city (for example: London) to convert games date/times into
-      ** type #{Paint['help', :green]} for the list of cities/timezones **
-      ** type #{Paint['exit', :red]} to exit the application **
-    TEXT
-  end
+    def instruction_text
+      <<~TEXT
+        PORTUGUESE SPORT TV CHANNELS
 
-  def user_input
-    input = @input_stream.gets.chomp
-    while invalid_city?(input)
-      if input.downcase == 'exit'
-        Kernel.exit
-      elsif input.downcase == 'help'
-        cities_tz_list
-        input = @input_stream.gets.chomp
-      else
-        puts "\n\n#{Paint['We could not find in our timezone list:', :red]} #{input.downcase}\n\n"
-        input = @input_stream.gets.chomp
-      end
+        Enter the name of the city (for example: London) to convert games date/times into
+        ** type #{Paint['help', :green]} for the list of cities/timezones **
+        ** type #{Paint['exit', :red]} to exit the application **
+      TEXT
     end
-    @city_tz = find_tzinfo(input.split.map(&:capitalize).join(' '))
-  end
 
-  def invalid_city?(input)
-    find_tzinfo(input.capitalize).nil?
-  rescue TZInfo::InvalidTimezoneIdentifier
-    true
-  end
+    def user_input
+      input = @input_stream.gets.chomp
+      while invalid_city?(input)
+        if input.downcase == 'exit'
+          Kernel.exit
+        elsif input.downcase == 'help'
+          cities_tz_list
+          input = @input_stream.gets.chomp
+        else
+          puts "\n\n#{Paint['We could not find in our timezone list:', :red]} #{input.downcase}\n\n"
+          input = @input_stream.gets.chomp
+        end
+      end
+      @city_tz = find_tzinfo(input.split.map(&:capitalize).join(' '))
+    end
 
-  def cities_tz_list
-    ActiveSupport::TimeZone.all.sort_by(&:name).map { |o| puts o.name }
-    puts "\n\n"
-  end
+    def invalid_city?(input)
+      find_tzinfo(input.capitalize).nil?
+    rescue TZInfo::InvalidTimezoneIdentifier
+      true
+    end
 
-  def find_tzinfo(input)
-    return ActiveSupport::TimeZone.find_tzinfo(DEFAULT_TZ) if input.strip.empty?
-    ActiveSupport::TimeZone.find_tzinfo(input)
-  end
+    def cities_tz_list
+      ActiveSupport::TimeZone.all.sort_by(&:name).map { |o| puts o.name }
+      puts "\n\n"
+    end
+
+    def find_tzinfo(input)
+      return ActiveSupport::TimeZone.find_tzinfo(DEFAULT_TZ) if input.strip.empty?
+      ActiveSupport::TimeZone.find_tzinfo(input)
+    end
 end
