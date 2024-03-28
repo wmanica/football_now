@@ -20,6 +20,11 @@ RSpec.configure do |config|
     require file
   end
 
+  # supresses puts to STDOUT for all tests
+  config.before(:each) do
+    allow(STDOUT).to receive(:puts)
+  end
+
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
