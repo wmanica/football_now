@@ -17,7 +17,9 @@ class PrintersManagerService
 
     print_city_tz
 
-    @games.each do |game|
+    games = self.is_a?(Printers::HtmlService) ? @games.take(70) : @games
+
+    games.each do |game|
       print_game(game)
     end
   end
