@@ -11,8 +11,8 @@ class GamesFetcherService
   class << self
     def fetch_games
       sources = {
-        RSS_URL => { :method => method(:process_rss_response), :service => :Rss},
-        HTML_URL => { :method => method(:process_html_response), :service => :Html}
+        HTML_URL => { :method => method(:process_html_response), :service => :Html },
+        RSS_URL => { :method => method(:process_rss_response), :service => :Rss }
       }
 
       sources.each do |url, processing_info|

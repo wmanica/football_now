@@ -1,4 +1,3 @@
-# spec/services/printers/html_service_spec.rb
 RSpec.describe Printers::HtmlService do
   let(:city_tz) { ActiveSupport::TimeZone["London"] }
   let(:game) { {info: '01/01 00:00  Team1 - Team2', tv: 'TV Channel'} }

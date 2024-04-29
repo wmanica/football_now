@@ -9,7 +9,6 @@ module Printers
              "#{Paint[game[:tv], :gray, :italic]}" +
              "#{SEPARATOR}" +
              "#{Paint[colorize_my_team(teams), :bold]} "+
-             # "#{SEPARATOR}" +
              "#{Paint[game[:competition], :cyan, :inverse]}\n"
     end
 
