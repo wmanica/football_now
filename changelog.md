@@ -1,4 +1,8 @@
 # Changelog
+## [5.2.0] - 2024/03/28
+### Changed
+*  Refactor RssService 
+
 ## [5.1.0] - 2024/03/28
 ### Added
 * Now with the competitions info
