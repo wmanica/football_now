@@ -1,4 +1,8 @@
 # Changelog
+## [5.2.0] - 2025/04/15
+### Changed
+* Bumped Ruby version to 3.4.3 for project and also in Dockerfile
+
 ## [5.2.0] - 2024/03/28
 ### Changed
 *  Refactor RssService 
