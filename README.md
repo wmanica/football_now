@@ -55,7 +55,7 @@ Ruby 3.4.3
 
 ## Versions
 
-Current version: **5.2.0**
+Current version: **6.0.0**
 
 ## Changelog
 
