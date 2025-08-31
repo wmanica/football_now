@@ -30,21 +30,6 @@ class PrintersManagerService
       puts "\nCity timezone: #{@city_tz.name} - #{@city_tz.now.strftime('%d/%m %H:%M')}\n\n"
     end
 
-    # TODO: Update this when RSS Zappping of Zerozero is back working. I need to have it working to remember how the data
-    #   is parsed to then refactor offset to be more agnostic between Rss and Html implementation
-    # def offset(pub_date)
-    #   date_split = pub_date.split(' ')
-    #
-    #   raise ArgumentError, 'Invalid date format' if date_split.size < 2
-    #
-    #   date_part = date_split.drop(1)
-    #   Time.zone = 'London'
-    #   bst_time = Time.zone.parse("#{date_part[2]}-#{date_part[1]}-#{date_part.first} #{date_part.last}")
-    #   user_time = bst_time.in_time_zone(@city_tz)
-    #
-    #   "#{user_time.strftime(DATE_FORMAT)} #{Paint['•', :green, :blink] if live?(user_time)}"
-    # end
-
     def offset(date, time)
       return "#{date} --:-- " if time == "-"
 
