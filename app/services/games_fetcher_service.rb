@@ -5,8 +5,8 @@ require 'nokogiri'
 require 'open-uri'
 
 class GamesFetcherService
-  RSS_URL = 'https://www.zerozero.pt/rss/zapping.php'
-  HTML_URL = 'https://www.zerozero.pt/zapping.php'
+	HTML_URL = 'https://www.zerozero.pt/zapping.php'
+	RSS_URL = 'https://www.zerozero.pt/rss/zapping.php'
 
   class << self
 		def fetch_games
