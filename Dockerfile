@@ -1,4 +1,4 @@
-FROM ruby:3.4.3
+FROM ruby:3.4.3-slim
 
 WORKDIR /football_now
 
@@ -11,7 +11,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends build-essential
     && bundle config set --local without 'development test' \
     && bundle install --jobs 20 --retry 5 \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get purge -y --auto-remove build-essential
 
 # Create regular user with explicit UID/GID
 RUN groupadd --gid 1000 football && \
