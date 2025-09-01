@@ -23,7 +23,7 @@
 * Refactor `Dockerfile`
 
 
-## [5.2.0] - 2025/04/15
+## [5.2.1] - 2025/04/15
 ### Changed
 * Bump `Ruby` version to 3.4.3 for project and also in `Dockerfile`
 
