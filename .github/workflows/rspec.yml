@@ -20,3 +20,5 @@ jobs:
 
       - name: Run RSpec tests
         run: bundle exec rspec
+        env:
+          TERM: xterm
