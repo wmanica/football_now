@@ -10,8 +10,12 @@ describe GamesFetcherService do
       let(:response) { instance_double(HTTParty::Response, success?: true, parsed_response: rss_data) }
 
       before do
-        allow(HTTParty).to receive(:get).with(described_class::RSS_URL).and_return(response)
-        allow(HTTParty).to receive(:get).with(described_class::HTML_URL).and_return(failed_response)
+        allow(HTTParty)
+					.to receive(:get).with(described_class::RSS_URL, headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 5)
+					.and_return(response)
+        allow(HTTParty)
+					.to receive(:get).with(described_class::HTML_URL, headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 5)
+					.and_return(failed_response)
       end
 
       it 'returns the games data with service' do
@@ -51,8 +55,12 @@ describe GamesFetcherService do
       end
 
       before do
-        allow(HTTParty).to receive(:get).with(described_class::HTML_URL).and_return(response)
-        allow(HTTParty).to receive(:get).with(described_class::RSS_URL).and_return(failed_response)
+				allow(HTTParty)
+					.to receive(:get).with(described_class::HTML_URL, headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 5)
+					.and_return(response)
+				allow(HTTParty)
+					.to receive(:get).with(described_class::RSS_URL, headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 5)
+					.and_return(failed_response)
       end
 
       it 'returns the games data with service' do
@@ -62,8 +70,12 @@ describe GamesFetcherService do
 
     context 'when the request fails for all' do
       before do
-        allow(HTTParty).to receive(:get).with(described_class::HTML_URL).and_return(failed_response)
-        allow(HTTParty).to receive(:get).with(described_class::RSS_URL).and_return(failed_response)
+				allow(HTTParty)
+					.to receive(:get).with(described_class::HTML_URL, headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 5)
+					.and_return(failed_response)
+				allow(HTTParty)
+					.to receive(:get).with(described_class::RSS_URL, headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 5)
+					.and_return(failed_response)
       end
 
       it 'outputs an error message' do
@@ -90,7 +102,7 @@ describe GamesFetcherService do
 
       it 'returns games and service as nil' do
         result = described_class.fetch_games rescue nil
-        expect(result).to be_nil
+        expect(result).to eq({games: nil, service: nil})
       end
     end
   end
