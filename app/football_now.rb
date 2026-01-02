@@ -18,9 +18,12 @@ class FootballNow
     private
 
       def fetch_data_and_start
-        games, service = GamesFetcherService.fetch_games.values
+				fetch_thread = Thread.new { GamesFetcherService.fetch_games }
 
-        city_tz = UserPromptService.new.city_prompt
+				city_tz = UserPromptService.new.city_prompt
+
+				games, service = fetch_thread.value.values
+
         Object.const_get("Printers::#{service}Service").new(games, city_tz).print_games
       end
   end

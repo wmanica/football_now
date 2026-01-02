@@ -1,11 +1,12 @@
 # frozen_string_literal: true
-
 source 'https://rubygems.org'
 
-gem 'activesupport', '~> 7.0.0'
-gem 'httparty', '~> 0.22.0'
+ruby '3.4.5'
+
+gem 'activesupport'
+gem 'httparty'
 gem 'nokogiri'
-gem 'paint', '~> 2.2.0'
+gem 'paint'
 gem 'rake'
-gem 'rspec', '~> 3.10'
+gem 'rspec'
 gem 'byebug'

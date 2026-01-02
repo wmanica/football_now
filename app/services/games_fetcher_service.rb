@@ -5,31 +5,42 @@ require 'nokogiri'
 require 'open-uri'
 
 class GamesFetcherService
-  RSS_URL = 'https://www.zerozero.pt/rss/zapping.php'
-  HTML_URL = 'https://www.zerozero.pt/zapping.php'
+	HTML_URL = 'https://www.zerozero.pt/zapping.php'
+	RSS_URL = 'https://www.zerozero.pt/rss/zapping.php'
 
   class << self
-    def fetch_games
-      sources = {
-        HTML_URL => { :method => method(:process_html_response), :service => :Html },
-        RSS_URL => { :method => method(:process_rss_response), :service => :Rss }
-      }
+		def fetch_games
+			begin
+				response = HTTParty.get(
+					'https://www.zerozero.pt/zapping.php', headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 5
+				)
 
-      sources.each do |url, processing_info|
-        response = HTTParty.get(url)
-        return { games: processing_info[:method].call(response), service: processing_info[:service] } if response.success?
-      end
+				if response.success?
+					return { games: process_html_response(response), service: :Html }
+				end
+			rescue => e
+				puts Paint["Error fetching from HTML source: #{e.message}", :yellow]
+			end
 
-      puts Paint['No games fetched. Check source services.', :red]
-      { games: nil, service: nil }
+			begin
+				response = HTTParty.get(
+					'https://www.zerozero.pt/rss/zapping.php', headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 5
+				)
 
-    rescue ::SocketError, HTTParty::Error => e
-      puts Paint['Check your internet connection. Error message:', :red, e.message]
-    end
+				if response.success?
+					return { games: process_rss_response(response), service: :Rss }
+				end
+			rescue => e
+				puts Paint["Error fetching from RSS source: #{e.message}", :yellow]
+			end
+
+			puts Paint['No games fetched. Check source services.', :red]
+			{ games: nil, service: nil }
+		end
 
     private
 
-    def process_rss_response(response)
+		def process_rss_response(response)
       response.parsed_response.dig('rss', 'channel', 'item')
     end
 
