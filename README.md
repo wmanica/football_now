@@ -11,7 +11,7 @@ There is the possibility of installing ruby and the dependencies (you can also u
 to use a containerized version with docker.
 
 ### Local
-1) install ruby v3.4.5 - Check [rbenv](https://github.com/rbenv/rbenv) for more info
+1) install ruby v4.0.0 - Check [rbenv](https://github.com/rbenv/rbenv) for more info
 
 2) install the required gems
 ```
@@ -51,11 +51,11 @@ NOTE: If you wish to run this command shortly (as shown in the gif above) you ca
 
 ## About
 
-Ruby 3.4.5
+Ruby 4.0.0
 
 ## Versions
 
-Current version: **6.1.0**
+Current version: **6.2.0**
 
 ## Changelog
 
