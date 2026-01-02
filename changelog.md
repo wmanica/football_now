@@ -1,4 +1,8 @@
 # Changelog
+## [6.2.0] - 2026/01/02
+### Changed
+* Bump Ruby version to 4.0.0 for project and also in Dockerfile
+
 ## [6.1.0] - 2025/04/15
 ### Added
 * Introduce `dependabot`, with also a configuration for daily updates on Bundler dependencies 

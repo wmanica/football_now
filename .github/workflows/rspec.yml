@@ -3,6 +3,7 @@ name: RSpec Tests
 on:
   pull_request:
     branches:
+      - develop
       - master
 
 jobs:
