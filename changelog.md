@@ -1,4 +1,8 @@
 # Changelog
+## [6.2.1] - 2026/01/02
+### Changed
+* Bump Ruby version to 4.1.0 for project and also in Dockerfile
+
 ## [6.2.0] - 2026/01/02
 ### Changed
 * Bump Ruby version to 4.0.0 for project and also in Dockerfile
