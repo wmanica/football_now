@@ -7,7 +7,7 @@ RSpec.describe PrintersManagerService do
     end
   end
 
-  let(:city_tz) { ActiveSupport::TimeZone["London"] }
+  let(:city_tz) { TZInfo::Timezone.get("Europe/London") }
   let(:games) {
     [
       {

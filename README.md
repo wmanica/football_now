@@ -15,7 +15,7 @@ to use a containerized version with docker.
 
 2) install the required gems
 ```
-$ gem install activesupport httparty nokogiri paint rake
+$ gem install tzinfo httparty nokogiri paint rake
 ```
 NOTE: alternatively if you use bundler, at the app directory:
 ```
@@ -55,7 +55,7 @@ Ruby 4.0.1
 
 ## Versions
 
-Current version: **6.2.0**
+Current version: **7.0.0**
 
 ## Changelog
 

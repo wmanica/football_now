@@ -24,6 +24,11 @@ class FootballNow
 
 				games, service = fetch_thread.value.values
 
+        unless %w[Html Rss].include?(service)
+          puts Paint["No valid games service found. Please check your network or try again later.", :red]
+          return
+				end
+
         Object.const_get("Printers::#{service}Service").new(games, city_tz).print_games
       end
   end

@@ -3,10 +3,10 @@ source 'https://rubygems.org'
 
 ruby '4.0.1'
 
-gem 'activesupport'
+gem 'byebug'
 gem 'httparty'
 gem 'nokogiri'
 gem 'paint'
 gem 'rake'
 gem 'rspec'
-gem 'byebug'
+gem 'tzinfo'

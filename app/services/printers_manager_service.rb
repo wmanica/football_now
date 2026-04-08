@@ -3,7 +3,7 @@
 class PrintersManagerService
   DATE_FORMAT = '%d/%m %H:%M'
   DATE_SEPARATOR = '/'
-  DEFAULT_TIME_ZONE = 'Lisbon'
+  DEFAULT_TIME_ZONE = 'Europe/Lisbon'
   MY_TEAM = 'Benfica'
   SEPARATOR = ' - '
 
@@ -34,18 +34,25 @@ class PrintersManagerService
       return "#{date} --:-- " if time == "-"
 
       current_year = Date.today.year
-      date = "#{date}#{DATE_SEPARATOR}#{current_year}"
+      date_str = "#{date}#{DATE_SEPARATOR}#{current_year} #{time}"
+      default_tz = TZInfo::Timezone.get(DEFAULT_TIME_ZONE)
 
-      Time.zone = DEFAULT_TIME_ZONE
-      bst_time = Time.zone.parse("#{date} #{time}")
-      user_time = bst_time.in_time_zone(@city_tz)
+      begin
+        local_time = Time.strptime(date_str, "%d/%m/%Y %H:%M")
+      rescue ArgumentError
+        return "#{date} --:-- "
+      end
+
+      bst_time = default_tz.local_to_utc(local_time)
+      user_time = @city_tz.utc_to_local(bst_time)
 
       "#{user_time.strftime(DATE_FORMAT)} #{Paint['•', :green, :blink] if live?(user_time)}"
     end
 
     def live?(user_time)
-      current_time = (@current_time ||= Time.now).in_time_zone(@city_tz)
-      (user_time..user_time.advance(hours: +2)).cover? current_time
+      current_time = (@current_time ||= @city_tz.utc_to_local(Time.now.getutc))
+      end_time = user_time + 2 * 60 * 60 # add 2 hours in seconds
+      (user_time..end_time).cover? current_time
     end
 
     def colorize_my_team(game_string)

@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
-require 'active_support/core_ext/string/conversions'
-require 'active_support/isolated_execution_state'
+require 'tzinfo'
 require 'paint'
 
 class UserPromptService
-  DEFAULT_TZ = 'Berlin'
+  # Build a mapping from city names to TZInfo identifiers
+  CITY_TO_TZ = TZInfo::Timezone.all_identifiers.each_with_object({}) do |id, hash|
+    city = id.split('/').last.gsub('_', ' ')
+    hash[city.downcase] ||= id
+  end
+  DEFAULT_TZ = 'Europe/Berlin'
 
   def initialize(input_stream = $stdin)
     @input_stream = input_stream
@@ -42,22 +46,34 @@ class UserPromptService
           input = @input_stream.gets.chomp
         end
       end
-      @city_tz = find_tzinfo(input.split.map(&:capitalize).join(' '))
+      @city_tz = find_tzinfo(input)
     end
 
     def invalid_city?(input)
-      find_tzinfo(input.capitalize).nil?
+      find_tzinfo(input).nil?
     rescue TZInfo::InvalidTimezoneIdentifier
       true
     end
 
     def cities_tz_list
-      ActiveSupport::TimeZone.all.sort_by(&:name).map { |o| puts o.name }
+      # Show a sorted, deduplicated list of city names
+      cities = TZInfo::Timezone.all_identifiers.map { |id| id.split('/').last.gsub('_', ' ') }
+      cities.uniq.sort.each { |city| puts city }
       puts "\n\n"
     end
 
     def find_tzinfo(input)
-      return ActiveSupport::TimeZone.find_tzinfo(DEFAULT_TZ) if input.strip.empty?
-      ActiveSupport::TimeZone.find_tzinfo(input)
+      return TZInfo::Timezone.get(DEFAULT_TZ) if input.strip.empty?
+      normalized = input.strip.downcase.gsub('_', ' ')
+
+      if CITY_TO_TZ[normalized] # Try direct city match
+        return TZInfo::Timezone.get(CITY_TO_TZ[normalized])
+      end
+
+      tz = TZInfo::Timezone.get(input) rescue nil # Try identifier match
+      return tz if tz
+
+      match = TZInfo::Timezone.all_identifiers.find { |id| id.downcase.include?(normalized.gsub(' ', '_')) }
+      match ? TZInfo::Timezone.get(match) : nil
     end
 end
