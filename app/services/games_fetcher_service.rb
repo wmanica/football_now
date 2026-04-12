@@ -27,7 +27,6 @@ class GamesFetcherService
 				response = HTTParty.get('https://www.zerozero.pt/zapping.php', headers: BROWSER_HEADERS, timeout: 30)
 
 				if response.success?
-					puts Paint["Processing HTML response", :yellow]
 					return { games: process_html_response(response), service: :Html }
 				end
 
@@ -41,7 +40,6 @@ class GamesFetcherService
 				response = HTTParty.get('https://www.zerozero.pt/rss/zapping.php', headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 30)
 
 				if response.success?
-					puts Paint["Processing RSS response", :yellow]
 					return { games: process_rss_response(response), service: :Rss }
 				end
 			rescue => e
