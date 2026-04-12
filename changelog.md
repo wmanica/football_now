@@ -4,11 +4,12 @@
 * Add `tzinfo` to the project
 
 ### Changed
-* Bump Ruby version to 4.0.2 for project and Dockerfile.
-* Refactor GamesFetcherService to use tzinfo instead of ActiveSupport::TimeZone.
-* Refactor GamesFetcherService to improve HTML and RSS response handling, error messages, and user-agent headers.
+* Bump `Ruby` version to 4.0.2 for project and Dockerfile.
+* Refactor `GamesFetcherService` to use tzinfo instead of ActiveSupport::TimeZone.
+* Refactor `GamesFetcherService` to improve HTML and RSS response handling, error messages, and user-agent headers.
+* Refactor `HtmlService#print_game` to use destructured hash for game info and simplify parsing logic in `GamesFetcherService`.
 * Use symbols instead of strings for service validation in football_now.rb.
-* Refactor tests to use symbols for service identifiers and streamline HTTParty request stubs.
+* Refactor tests to use symbols for service identifiers and streamline `HTTParty` request stubs.
 
 ### Removed
 * Remove `activesupport` as dependency
