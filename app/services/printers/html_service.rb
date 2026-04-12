@@ -6,7 +6,7 @@ module Printers
       game_info => { date:, time:, tv:, teams:, competition: }
 
       puts "#{offset(date, time)} " +
-           "#{Paint[tv, :black, :italic, :inverse]} " +
+           "#{Paint[tv, :white, :italic, :inverse]} " +
            "#{Paint[colorize_my_team(teams), :bold]} "+
            "#{Paint[competition, :cyan, :inverse]}\n"
     end
