@@ -27,7 +27,6 @@ class GamesFetcherService
 				response = HTTParty.get('https://www.zerozero.pt/zapping.php', headers: BROWSER_HEADERS, timeout: 30)
 
 				if response.success?
-					puts Paint["Processing HTML response", :yellow]
 					return { games: process_html_response(response), service: :Html }
 				end
 
@@ -41,7 +40,6 @@ class GamesFetcherService
 				response = HTTParty.get('https://www.zerozero.pt/rss/zapping.php', headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 30)
 
 				if response.success?
-					puts Paint["Processing RSS response", :yellow]
 					return { games: process_rss_response(response), service: :Rss }
 				end
 			rescue => e
@@ -72,10 +70,16 @@ class GamesFetcherService
       trs.map do |tr|
         tds = tr.css('td')
         next if tds.size < 3
-        info = tds[0...-2].map(&:text).join(' ').strip
+
+        date = tds[0]&.text&.strip&.split(' ')&.last
+        time = tds[2]&.text&.strip
         tv = tds[-2]&.at_css('img')&.[]('alt') || tds[-2]&.text&.strip
-        competition = tds.last&.text&.gsub("\u00A0", '')&.strip
-        { info: info, tv: tv, competition: competition }
+        team1 = tr.at_css('td.home a')&.text&.strip || tds[5]&.text&.strip
+        team2 = tr.at_css('td.away a')&.text&.strip || tds[7]&.text&.strip
+				teams = "#{team1} vs #{team2}"
+				competition = tds.last&.text&.gsub("\u00A0", '')&.strip
+
+				{ date: date, time: time, tv: tv, teams: teams, competition: competition }
       end.compact
     end
 
