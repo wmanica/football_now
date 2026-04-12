@@ -3,31 +3,45 @@
 require 'httparty'
 require 'nokogiri'
 require 'open-uri'
+require 'byebug'
 
 class GamesFetcherService
 	HTML_URL = 'https://www.zerozero.pt/zapping.php'
 	RSS_URL = 'https://www.zerozero.pt/rss/zapping.php'
+  BROWSER_HEADERS = {
+    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
+    'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+    'Accept-Language' => 'en-US,en;q=0.9',
+    'Referer' => 'https://www.zerozero.pt/',
+    'Connection' => 'keep-alive',
+    'Upgrade-Insecure-Requests' => '1',
+    'Sec-Fetch-Dest' => 'document',
+    'Sec-Fetch-Mode' => 'navigate',
+    'Sec-Fetch-Site' => 'same-origin',
+    'Sec-Fetch-User' => '?1'
+  }
 
   class << self
 		def fetch_games
 			begin
-				response = HTTParty.get(
-					'https://www.zerozero.pt/zapping.php', headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 5
-				)
+				response = HTTParty.get('https://www.zerozero.pt/zapping.php', headers: BROWSER_HEADERS, timeout: 30)
 
 				if response.success?
+					puts Paint["Processing HTML response", :yellow]
 					return { games: process_html_response(response), service: :Html }
 				end
+
+        games = process_html_response(file_content)
+        return { games: games, service: :Html } if !games.nil?
 			rescue => e
 				puts Paint["Error fetching from HTML source: #{e.message}", :yellow]
 			end
 
 			begin
-				response = HTTParty.get(
-					'https://www.zerozero.pt/rss/zapping.php', headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 5
-				)
+				response = HTTParty.get('https://www.zerozero.pt/rss/zapping.php', headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 30)
 
 				if response.success?
+					puts Paint["Processing RSS response", :yellow]
 					return { games: process_rss_response(response), service: :Rss }
 				end
 			rescue => e
@@ -45,26 +59,38 @@ class GamesFetcherService
     end
 
     def process_html_response(response)
-      document = Nokogiri::HTML(response.body)
+      html = response.is_a?(String) ? response : response.body
+			process_html_response_from_body(html)
+    end
+
+    def process_html_response_from_body(body)
+      document = body.is_a?(Nokogiri::HTML::Document) ? body : Nokogiri::HTML(body)
       tbody = find_tbody(document)
+      return [] unless tbody
 
-      tbody.css('tr').map do |tr|
-        competition = tr.css('td:last-child').text.gsub("\u00A0", '').strip
-
-        tds = tr.css('td')[0...-1]
-        code = tr.at_css('div.micrologo_and_text > div.text > a')&.text
-
-        game_info = tds.map(&:text).join(' ').gsub(code, '').strip
-        tv = tr.at_css('td:nth-last-child(2) img')&.[]('alt')
-
-        { info: game_info, tv: tv, competition: competition }
-      end
+      trs = tbody.css('tr')
+      trs.map do |tr|
+        tds = tr.css('td')
+        next if tds.size < 3
+        info = tds[0...-2].map(&:text).join(' ').strip
+        tv = tds[-2]&.at_css('img')&.[]('alt') || tds[-2]&.text&.strip
+        competition = tds.last&.text&.gsub("\u00A0", '')&.strip
+        { info: info, tv: tv, competition: competition }
+      end.compact
     end
 
     def find_tbody(document)
+      # Prefer the main games table with class 'zztable stats'
+      table = document.at_css('table.zztable.stats')
+      return table.at_css('tbody') if table
+      # Fallback to previous logic
       h2 = document.at_css('h2.header')
-      table = h2.next_element
-      table.css('tbody').first
+      table = h2&.next_element
+      while table && table.name != 'table'
+        table = table.next_element
+      end
+      tbody = table&.at_css('tbody')
+      tbody || document.at_css('tbody')
     end
   end
 end

@@ -7,15 +7,18 @@ describe GamesFetcherService do
 
   describe '.fetch_games' do
     context 'when the service is RSS' do
-      let(:response) { instance_double(HTTParty::Response, success?: true, parsed_response: rss_data) }
+      let(:response) { instance_double(HTTParty::Response, success?: true, parsed_response: rss_data, body: nil) }
 
       before do
         allow(HTTParty)
-					.to receive(:get).with(described_class::RSS_URL, headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 5)
-					.and_return(response)
+          .to receive(:get)
+          .with(anything, hash_including(headers: hash_including('User-Agent'), timeout: kind_of(Numeric)))
+          .and_return(failed_response)
+
         allow(HTTParty)
-					.to receive(:get).with(described_class::HTML_URL, headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 5)
-					.and_return(failed_response)
+          .to receive(:get)
+          .with(described_class::RSS_URL, hash_including(headers: hash_including('User-Agent'), timeout: kind_of(Numeric)))
+          .and_return(response)
       end
 
       it 'returns the games data with service' do
@@ -26,7 +29,7 @@ describe GamesFetcherService do
     context 'when the service is HTML' do
       let(:expected_html_return) do
         {
-          games: [{ info: "Some other data", tv: nil, competition: '' }],
+          games: [{ info: "Fake game code", tv: "Some other data", competition: '' }],
           service: :Html
         }
       end
@@ -56,10 +59,13 @@ describe GamesFetcherService do
 
       before do
 				allow(HTTParty)
-					.to receive(:get).with(described_class::HTML_URL, headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 5)
-					.and_return(response)
+            .to receive(:get)
+            .with(described_class::HTML_URL, hash_including(headers: hash_including('User-Agent'), timeout: kind_of(Numeric)))
+            .and_return(response)
+
 				allow(HTTParty)
-					.to receive(:get).with(described_class::RSS_URL, headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 5)
+					.to receive(:get)
+          .with(described_class::RSS_URL, headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 5)
 					.and_return(failed_response)
       end
 
@@ -71,11 +77,9 @@ describe GamesFetcherService do
     context 'when the request fails for all' do
       before do
 				allow(HTTParty)
-					.to receive(:get).with(described_class::HTML_URL, headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 5)
-					.and_return(failed_response)
-				allow(HTTParty)
-					.to receive(:get).with(described_class::RSS_URL, headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 5)
-					.and_return(failed_response)
+          .to receive(:get)
+          .with(anything, hash_including(headers: hash_including('User-Agent'), timeout: kind_of(Numeric)))
+          .and_return(failed_response)
       end
 
       it 'outputs an error message' do

@@ -15,7 +15,7 @@ describe FootballNow do
 
     context 'when there are no exceptions' do
       context "when service is 'Rss'" do
-        let(:results) { { games: 'games', service: 'Rss' } }
+        let(:results) { { games: 'games', service: :Rss } }
 
         it 'fetches games, prompts city timezone, and prints games' do
           allow(GamesFetcherService).to receive(:fetch_games).and_return(results)
@@ -28,7 +28,7 @@ describe FootballNow do
       end
 
       context "when service is 'Html'" do
-        let(:results) { { games: 'games', service: 'Html' } }
+        let(:results) { { games: 'games', service: :Html } }
 
         it 'fetches games, prompts city timezone, and prints games' do
           allow(GamesFetcherService).to receive(:fetch_games).and_return(results)
@@ -43,7 +43,7 @@ describe FootballNow do
 
     context 'when an error occurs' do
       let(:error) { StandardError.new('This is a test error') }
-      let(:results) { { games: 'games', service: 'Rss' } }
+      let(:results) { { games: 'games', service: :Rss } }
 
       it 'rescues the standard error and outputs an error message' do
         allow(GamesFetcherService).to receive(:fetch_games).and_raise(error)

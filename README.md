@@ -11,11 +11,11 @@ There is the possibility of installing ruby and the dependencies (you can also u
 to use a containerized version with docker.
 
 ### Local
-1) install ruby v4.0.1 - Check [rbenv](https://github.com/rbenv/rbenv) for more info
+1) install ruby v4.0.2 - Check [rbenv](https://github.com/rbenv/rbenv) for more info
 
 2) install the required gems
 ```
-$ gem install activesupport httparty nokogiri paint rake
+$ gem install tzinfo httparty nokogiri paint rake
 ```
 NOTE: alternatively if you use bundler, at the app directory:
 ```
@@ -51,11 +51,11 @@ NOTE: If you wish to run this command shortly (as shown in the gif above) you ca
 
 ## About
 
-Ruby 4.0.1
+Ruby 4.0.2
 
 ## Versions
 
-Current version: **6.2.0**
+Current version: **7.0.0**
 
 ## Changelog
 

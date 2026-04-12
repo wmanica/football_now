@@ -1,11 +1,28 @@
 # Changelog
+## [7.0.0] - 2026/04/12
+### Added
+* Add `tzinfo` to the project
+
+### Changed
+* Bump Ruby version to 4.0.2 for project and Dockerfile.
+* Refactor GamesFetcherService to use tzinfo instead of ActiveSupport::TimeZone.
+* Refactor GamesFetcherService to improve HTML and RSS response handling, error messages, and user-agent headers.
+* Use symbols instead of strings for service validation in football_now.rb.
+* Refactor tests to use symbols for service identifiers and streamline HTTParty request stubs.
+
+### Removed
+* Remove `activesupport` as dependency
+
+
 ## [6.2.1] - 2026/01/02
 ### Changed
 * Bump Ruby version to 4.1.0 for project and also in Dockerfile
 
+
 ## [6.2.0] - 2026/01/02
 ### Changed
 * Bump Ruby version to 4.0.0 for project and also in Dockerfile
+
 
 ## [6.1.0] - 2025/04/15
 ### Added

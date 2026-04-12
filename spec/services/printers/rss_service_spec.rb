@@ -1,5 +1,5 @@
 RSpec.describe Printers::RssService do
-  let(:city_tz) { ActiveSupport::TimeZone["London"] }
+  let(:city_tz) { TZInfo::Timezone.get("Europe/London") }
 
   subject(:service) { described_class.new([game], city_tz) }
 
