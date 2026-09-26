@@ -3,7 +3,7 @@
 require 'httparty'
 require 'nokogiri'
 require 'open-uri'
-require 'byebug'
+require 'debug'
 
 class GamesFetcherService
 	HTML_URL = 'https://www.zerozero.pt/zapping.php'
@@ -20,33 +20,27 @@ class GamesFetcherService
     'Sec-Fetch-Site' => 'same-origin',
     'Sec-Fetch-User' => '?1'
   }
+	TIMEOUT = 30
 
   class << self
 		def fetch_games
 			begin
-				response = HTTParty.get('https://www.zerozero.pt/zapping.php', headers: BROWSER_HEADERS, timeout: 30)
+				response = HTTParty.get(HTML_URL, headers: BROWSER_HEADERS, timeout: TIMEOUT)
 
-				if response.success?
-					return { games: process_html_response(response), service: :Html }
-				end
-
-        games = process_html_response(file_content)
-        return { games: games, service: :Html } if !games.nil?
+				return { games: process_html_response(response), service: :Html } if response.success?
 			rescue => e
-				puts Paint["Error fetching from HTML source: #{e.message}", :yellow]
+				print_error(e, :Html)
 			end
 
 			begin
-				response = HTTParty.get('https://www.zerozero.pt/rss/zapping.php', headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: 30)
+				response = HTTParty.get(RSS_URL, headers: { 'User-Agent' => 'Mozilla/5.0' }, timeout: TIMEOUT)
 
-				if response.success?
-					return { games: process_rss_response(response), service: :Rss }
-				end
+				return { games: process_rss_response(response), service: :Rss } if response.success?
 			rescue => e
-				puts Paint["Error fetching from RSS source: #{e.message}", :yellow]
+				print_error(e, :Rss)
 			end
 
-			puts Paint['No games fetched. Check source services.', :red]
+			puts Paint["No games fetched. Check source services: #{response&.status}", :red]
 			{ games: nil, service: nil }
 		end
 
@@ -95,6 +89,10 @@ class GamesFetcherService
       end
       tbody = table&.at_css('tbody')
       tbody || document.at_css('tbody')
-    end
+		end
+
+		def print_error(e, type)
+			puts Paint["Error fetching from #{type} source: #{e.message}", :yellow]
+		end
   end
 end

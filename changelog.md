@@ -2,9 +2,11 @@
 ## [7.1.0] - 2026/09/26
 ### Changed
 * Bump `Ruby` version to 4.0.7 for project and Dockerfile.
+* Refactor `GamesFetcherService`: use constants, extract error logging to helper and improve readability.
 
 ### Removed
 * Remove `byebug` as dependency in favor of `debug`
+
 
 ## [7.0.0] - 2026/04/12
 ### Added
