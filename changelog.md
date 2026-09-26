@@ -3,6 +3,9 @@
 ### Changed
 * Bump `Ruby` version to 4.0.7 for project and Dockerfile.
 
+### Removed
+* Remove `byebug` as dependency in favor of `debug`
+
 ## [7.0.0] - 2026/04/12
 ### Added
 * Add `tzinfo` to the project

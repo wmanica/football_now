@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 
 ruby '4.0.7'
 
-gem 'byebug'
+gem 'debug'
 gem 'httparty'
 gem 'mutant-rspec'
 gem 'nokogiri'
