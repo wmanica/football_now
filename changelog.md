@@ -1,4 +1,8 @@
 # Changelog
+## [7.1.0] - 2026/09/26
+### Changed
+* Bump `Ruby` version to 4.0.7 for project and Dockerfile.
+
 ## [7.0.0] - 2026/04/12
 ### Added
 * Add `tzinfo` to the project
